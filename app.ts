@@ -13,7 +13,7 @@ class MyHashMap<K, V> {
   }
 
   //returns an index used to determine where to place k,v pair
-  hash(key: string) {
+  hash(key) {
     let hash = 0;
     const strKey = String(key);
     for (let i = 0; i < strKey.length; i++) {
@@ -31,18 +31,14 @@ class MyHashMap<K, V> {
     //if it doesn't exist push k,v
     const index = this.hash(key);
 
-
-    if(!this.buckets[index]){
-      this.buckets[index]=[]
+    if (!this.buckets[index]) {
+      this.buckets[index] = [];
     }
-
-   
 
     const theBucket = this.buckets[index];
 
     //we looop here rather than direct access cos collisions may occur and spot in the bucket can contain multiple [k,v] pairs
     for (let i = 0; i < theBucket.length; i++) {
-
       if (theBucket[i][0] === key) {
         theBucket[i][1] = value;
         return;
@@ -54,11 +50,40 @@ class MyHashMap<K, V> {
     this.size += 1;
   }
 
-  get() {}
+  get(key: K) {
+    //use has, to locate possible index , loop through bucket to find where index[0] is the key , return
+    //second index , if i doesn't exist, return undefined
+    const index = this.hash(key);
+    const theBucket = this.buckets[index];
+
+    for (let i = 0; i < theBucket.length; i++) {
+      if (theBucket[i][0] === key) {
+        return theBucket[i][1];
+      } else return undefined;
+    }
+  }
+
+  has(key: K) {
+    const index = this.hash(key);
+    const theBucket = this.buckets[index];
+    if (!theBucket) return false;
+  }
+
+  delete(key: K) {
+    const index = this.hash(key);
+    const theBucket = this.buckets[index];
+
+    for (let i = 0; i < theBucket.length; i++) {
+      if (theBucket[i][0] === key) {
+        theBucket.splice(i, 1);
+        return true;
+      } else return false;
+    }
+  }
 }
 
 const myMap = new MyHashMap();
-// console.log(myMap.hash("grapes"))
-myMap.set("grapes", 1000);
-myMap.set("grapes", 3000);
+myMap.set("cat", 1000);
+myMap.set("fb", 3000);
+myMap.delete("cat")
 console.log(myMap);
