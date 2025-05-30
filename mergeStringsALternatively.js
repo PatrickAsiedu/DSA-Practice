@@ -42,7 +42,7 @@ var mergeAlternately = function (word1, word2) {
   for (let i = 0; i < word1.length; i++) {
     output = output + word1[i] + word2[i];
   }
-  return output;
+  return  output;
 };
 
 mergeAlternately("ab", "pqrs");
