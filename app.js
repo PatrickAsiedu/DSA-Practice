@@ -42,40 +42,70 @@ class LinkedList {
   }
 
   insert(index, value) {
+
+    let counter = 0;
+    let previous = new Node();
+    let current = this.head;
     // if (index <= this.size) {
     //   const myNode = new Node(value);
     //   this.head = myNode;
     // }
 
-     if (index > this.size) {
+    if (index >= this.size) {
       throw Error("insert exceeed size");
     }
-    else{
-          //travserse to specified index  , set new node.next to that item , find prev item item, set its next to new Node
-    let counter = 0;
-    let previous = null;
-    let current = this.head;
-    while (counter !== index && current) {
-      previous = current;
-      current = current.next;
-      counter++;
+    else if(index ===0){
+      this.prepend(value)
     }
+     else {
+      //travserse to specified index  , set new node.next to that item , find prev item item, set its next to new Node
+  
+      while (counter !== index && current) {
+        previous = current;
+        current = current.next;
+        counter++;
+      }
 
-    const myNode = new Node(value);
-    myNode.next = current;
-    previous.next = myNode;
+      const myNode = new Node(value);
+      myNode.next = current;
+      previous.next = myNode;
+    }
   }
+
+  remove(index) {
+    //traverse to index , set previous.next = current.next
+
+    let counter = 0;
+    let previous = new Node();
+    let current = this.head;
+
+    if (index === 0) {
+      this.head = this.head.next;
+    } 
+    else if(index >= this.size){
+      throw Error("boundary reached")
     }
+    
+    else {
+      while (counter !== index && current) {
+        previous = current;
+        current = current.next;
+        counter++;
+      }
 
+  
 
-
-  remove() {}
+      previous.next = current.next;
+    }
+  }
 }
 
 const myLInkedlist = new LinkedList(1);
 
 myLInkedlist.prepend(2);
 myLInkedlist.prepend(3);
-myLInkedlist.insert(2, 7);
+myLInkedlist.insert(0, 7);
+myLInkedlist.remove(0);
+myLInkedlist.insert(1, 8);
 
 console.log(myLInkedlist.print());
