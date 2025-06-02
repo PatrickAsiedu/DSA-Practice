@@ -2,10 +2,11 @@ class Node {
   constructor(value) {
     this.value = value;
     this.next = null;
+    this.prev = null;
   }
 }
 
-class LinkedList {
+class DoublyLinkedList {
   constructor(value) {
     this.head = new Node(value);
     this.tail = this.head;
@@ -15,19 +16,27 @@ class LinkedList {
   prepend(value) {
     const myNode = new Node(value);
     // set first item to new node's next item
+    this.head.prev = myNode;
     myNode.next = this.head;
+    myNode.prev = null;
     this.head = myNode;
     this.size++;
   }
 
   append(value) {
     //find the last element  , set its next to the new node, set new node next to null
+
+    const myNode = new Node(value);
+
     let last = this.head;
     while (last.next !== null) {
       last = last.next;
     }
 
-    last.next = new Node(value);
+    myNode.prev = last;
+    last.next = myNode;
+    this.tail = myNode;
+
     this.size++;
   }
 
@@ -64,6 +73,8 @@ class LinkedList {
       }
 
       const myNode = new Node(value);
+      myNode.prev = previous;
+      current.prev = myNode;
       myNode.next = current;
       previous.next = myNode;
     }
@@ -87,36 +98,20 @@ class LinkedList {
         counter++;
       }
 
+      current.next.prev = previous;
       previous.next = current.next;
     }
   }
-
-  reverse() {
-    if (!this.head.next) {
-      return this.head;
-    }
-
-    let first = this.head;
-    this.tail = this.head
-    let second = first.next;
-    while (second) {
-      const temp = second.next;
-      second.next = first;
-      first = second;
-      second = temp;
-    }
-    this.head.next = null
-    this.head = first
-  }
 }
 
-const myLInkedlist = new LinkedList(1);
+const myLInkedlist = new DoublyLinkedList(1);
 
-myLInkedlist.prepend(2);
-myLInkedlist.prepend(3);
+myLInkedlist.append(5);
+// myLInkedlist.prepend(2);
+// myLInkedlist.prepend(3);
 // myLInkedlist.insert(0, 7);
 // myLInkedlist.remove(0);
-// myLInkedlist.insert(1, 8);
-// myLInkedlist.reverse()
+myLInkedlist.insert(1, 8);
 
-console.log(myLInkedlist.print());
+console.log(myLInkedlist);
+// console.log(myLInkedlist.print());
