@@ -5,44 +5,53 @@ class Node {
   }
 }
 
-class Stack {
+class Queue {
   constructor() {
-    this.top = null;
-    this.bottom = null;
+    this.first = null;
+    this.last = null;
     this.size = 0;
   }
 
   peek() {
-    return this.top;
+    //return first item
+    return this.first;
   }
 
-  push(value) {
-    //if its empty top and bottom = new Node
+  dequeue() {
+    //remove first item
+    //set first.next to be first and return removed first
+    if (this.size === 0) {
+      return;
+    }
+
+    if (this.first === this.last) {
+      this.last = null;
+    }
+    const temp = this.first;
+    this.first = this.first.next;
+    this.size--;
+    return temp;
+  }
+
+  enqueue(value) {
+    //add to last item
     const myNode = new Node(value);
     if (this.size === 0) {
-      this.top = myNode;
-      this.bottom = myNode;
+      this.last = myNode;
+      this.first = myNode;
     } else {
-      const temp = this.top;
-      this.top = myNode;
-      this.top.next = temp;
+      //whatever was last should point to new Node
+      this.last.next = myNode;
+      this.last = myNode;
     }
     this.size++;
     return this;
   }
-
-  pop() {
-    //top.next becomes top
-    const poppedData = this.top;
-    this.top = this.top.next;
-    this.size--;
-    return poppedData;
-  }
 }
 
-const myStack = new Stack();
-myStack.push("first");
-myStack.push("second");
-myStack.push("third");
-console.log(myStack.pop());
-console.log(myStack);
+const myQueue = new Queue();
+myQueue.enqueue("First");
+myQueue.enqueue("Second");
+myQueue.enqueue("Third");
+console.log(myQueue.dequeue())
+console.log(myQueue);
