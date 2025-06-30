@@ -107,6 +107,11 @@ class BinarySearchTree {
         }
         //has two children
         else {
+          // visit the right child and keep travsersing to the left of subsequent children till the last child
+
+
+
+          //if successor node has a right child
           //go to the right child, if it has no children, plug right child at that node and left child at left of the right child
           if (lastturn === "left") {
             current.right.left = current.left;

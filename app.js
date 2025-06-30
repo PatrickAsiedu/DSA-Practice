@@ -1,146 +1,83 @@
-class TreeNode {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-}
+/**
+Code
+Testcase
+Test Result
+Test Result
+1657. Determine if Two Strings Are Close
+Two strings are considered close if you can attain one from the other using the following operations:
 
-class BinarySearchTree {
-  constructor() {
-    this.root = null;
-  }
+Operation 1: Swap any two existing characters.
+For example, abcde -> aecdb
+Operation 2: Transform every occurrence of one existing character into another existing character, and do the same with the other character.
+For example, aacabb -> bbcbaa (all a's turn into b's, and all b's turn into a's)
+You can use the operations on either string as many times as necessary.
 
-  insert(value) {
-    const myNode = new TreeNode(value);
+Given two strings, word1 and word2, return true if word1 and word2 are close, and false otherwise.
 
-    if (this.root === null) {
-      this.root = myNode;
-    } else {
-      /*traverse tree  , if value < this.currentnode.value and current.left is empty , assign current.left = node ,
-      if its not empty keep traversing
-      */
+ 
 
-      let current = this.root;
-      while (current) {
-        if (myNode.value < current.value) {
-          if (!current.left) {
-            current.left = myNode;
-            return this;
-          }
-          current = current.left;
-        } else if (myNode.value > current.value) {
-          if (!current.right) {
-            current.right = myNode;
-            return this;
-          }
-          current = current.right;
-        }
-      }
-    }
-  }
+Example 1:
 
-  lookup(value) {
-    const myNode = new TreeNode(value);
-    if (!this.root) {
+Input: word1 = "abc", word2 = "bca"
+Output: true
+Explanation: You can attain word2 from word1 in 2 operations.
+Apply Operation 1: "abc" -> "acb"
+Apply Operation 1: "acb" -> "bca"
+Example 2:
+
+Input: word1 = "a", word2 = "aa"
+Output: false
+Explanation: It is impossible to attain word2 from word1, or vice versa, in any number of operations.
+Example 3:
+
+Input: word1 = "cabbba", word2 = "abbccc"
+Output: true
+Explanation: You can attain word2 from word1 in 3 operations.
+Apply Operation 1: "cabbba" -> "caabbb"
+Apply Operation 2: "caabbb" -> "baaccc"
+Apply Operation 2: "baaccc" -> "abbccc"
+ 
+ */
+//swap any two existing characters
+//transform every occurence of an existing character into another
+var closeStrings = function (word1, word2) {
+  const isSwappable = function (word1, word2) {
+    //all chars have to exist in both strings ,both strings should have  same length , count for each char has to be the same
+    if (word1.length !== word2.length) {
       return false;
     }
-    let current = this.root;
-    while (current) {
-      if (myNode.value < current.value) {
-        current = current.left;
-      } else if (myNode.value > current.value) {
-        current = current.right;
-      } else if (myNode.value === current.value) {
-        return current.value;
+
+    const map1 = {};
+    const map2 = {};
+
+    for (let i of word1) {
+      //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
+      map1[i] = (map1[i] || 0) + 1;
+    }
+
+    for (let i of word2) {
+      //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
+      map2[i] = (map2[i] || 0) + 1;
+    }
+
+    for (let i of word1) {
+      if (map1[i] !== map2[i]) {
+        return false;
+      } else if (!word2.includes(i)) {
+        return false;
       }
     }
+
+    return true;
+  };
+
+  const isTrasnformable = (word1,word2) => {};
+
+  if (isSwappable(word1, word2)) {
+    return true;
+  } else {
     return false;
   }
+};
 
-  remove(value) {
-    let current = this.root;
-    let parent;
-    let lastturn;
-    let child;
-    if (!this.root) {
-      return false;
-    }
-    //traverse to node
-    while (current) {
-      if (value < current.value) {
-        parent = current;
-        current = current.left;
-        lastturn = "left";
-      } else if (value > current.value) {
-        parent = current;
-        current = current.right;
-        lastturn = "right";
-      } else if (value === current.value) {
-        //node found now implement remove
-        //if node has no children
-        if (!current.left && !current.right) {
-          if (lastturn === "left") {
-            parent.left = null;
-            return this;
-          } else {
-            parent.right = null;
-            return this;
-          }
-        }
-        //has only one child plug child into deleted spot
-        else if (!current.left || !current.right) {
-          //find child,  find node's parent ,
-          if (current.left) {
-            child = current.left;
-          } else {
-            child = current.right;
-          }
-
-          if (lastturn === "left") {
-            parent.left = child;
-            return this;
-          } else {
-            parent.right = child;
-            return this;
-          }
-        }
-        //has two children
-        else {
-          // visit the right child and keep travsersing to the left of subsequent children till the last child
-
-
-
-          //if successor node has a right child
-          //go to the right child, if it has no children, plug right child at that node and left child at left of the right child
-          if (lastturn === "left") {
-            current.right.left = current.left;
-            parent.left = current.right;
-            return this;
-          } else {
-            current.right.left = current.left;
-            parent.right = current.right;
-            return this;
-          }
-        }
-      }
-    }
-  }
-
-  toJSON() {
-    return JSON.stringify(this.root, null, 2); // Pretty-print with 2-space indentation
-  }
-}
-
-const myTree = new BinarySearchTree();
-myTree.insert(9);
-myTree.insert(4);
-myTree.insert(6);
-myTree.insert(20);
-myTree.insert(15);
-myTree.insert(70);
-// myTree.insert(1);
-// console.log(myTree.lookup(20));
-myTree.remove(20);
-
-console.log(myTree.toJSON());
+console.log(closeStrings("abcaf", "bcaag"));
