@@ -41,43 +41,52 @@ Apply Operation 2: "baaccc" -> "abbccc"
 //swap any two existing characters
 //transform every occurence of an existing character into another
 var closeStrings = function (word1, word2) {
-  const isSwappable = function (word1, word2) {
-    //all chars have to exist in both strings ,both strings should have  same length , count for each char has to be the same
-    if (word1.length !== word2.length) {
-      return false;
-    }
+  const map1 = {};
+  const map2 = {};
 
-    const map1 = {};
-    const map2 = {};
+  for (let i of word1) {
+    //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
+    map1[i] = (map1[i] || 0) + 1;
+  }
 
-    for (let i of word1) {
-      //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
-      map1[i] = (map1[i] || 0) + 1;
-    }
+  for (let i of word2) {
+    //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
+    map2[i] = (map2[i] || 0) + 1;
+  }
 
-    for (let i of word2) {
-      //evaluate bracket , gets 0 when map[i] is undef , and its value when defined, either way , add  + 1
-      map2[i] = (map2[i] || 0) + 1;
-    }
+  console.log(map1);
+  console.log(map2);
 
-    for (let i of word1) {
-      if (map1[i] !== map2[i]) {
-        return false;
-      } else if (!word2.includes(i)) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  const isTrasnformable = (word1,word2) => {};
-
-  if (isSwappable(word1, word2)) {
-    return true;
-  } else {
+  //all chars have to exist in both strings ,both strings should have  same length
+  if (word1.length !== word2.length) {
     return false;
   }
+
+  for (let i of word1) {
+    if (!word2.includes(i)) {
+      return false;
+    }
+  }
+
+  if (word1.length !== word2.length) {
+    return false;
+  }
+  //the frequencies of each character in word 1 , has to match the freq in word 2 , ie [1,2,3] -- [1,2,3]
+  const freq1 = Object.values(map1).sort((a, b) => a - b);
+  const freq2 = Object.values(map2).sort((a, b) => a - b);
+
+  for (let i = 0; i < freq1.length; i++) {
+    if (freq1[i] !== freq2[i]) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
-console.log(closeStrings("abcaf", "bcaag"));
+console.log(
+  closeStrings(
+    "yyyuxuyuxxxxxxxyyyyyxxyyxxxyyyxyx",
+    "uxuxuuuuuuxuuyuuuuuuyuuuuuuuyyuuu"
+  )
+);
