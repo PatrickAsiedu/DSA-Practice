@@ -1,44 +1,64 @@
-/**Given an encoded string, return its decoded string.
+/**We are given an array asteroids of integers representing asteroids in a row. The indices of the asteriod in the array represent their relative position in space.
 
-The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+For each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.
 
-You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
-
-The test cases are generated so that the length of the output will never exceed 105.
+Find out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.
 
  
 
 Example 1:
 
-Input: s = "3[a]2[bc]"
-Output: "aaabcbc"
+Input: asteroids = [5,10,-5]
+Output: [5,10]
+Explanation: The 10 and -5 collide resulting in 10. The 5 and 10 never collide.
 Example 2:
 
-Input: s = "3[a2[c]]"
-Output: "accaccacc"
+Input: asteroids = [8,-8]
+Output: []
+Explanation: The 8 and -8 collide exploding each other.
 Example 3:
 
-Input: s = "2[abc]3[cd]ef"
-Output: "abcabccdcdcdef"
+Input: asteroids = [10,-5,-2]
+Output: [10]
+Explanation: The 2 and -5 collide resulting in -5. The 10 and -5 collide resulting in 10.
  
 
 Constraints:
 
-1 <= s.length <= 30
-s consists of lowercase English letters, digits, and square brackets '[]'.
-s is guaranteed to be a valid input.
-All the integers in s are in the range [1, 300]. */
-
+2 <= asteroids.length <= 104
+-1000 <= asteroids[i] <= 1000
+asteroids[i] != 0 */
 
 /**
- * @param {string} s
- * @return {string}
+ * @param {number[]} asteroids
+ * @return {number[]}
  */
-var decodeString = function(s) {
+var asteroidCollision = function (asteroids) {
+  //loop through input , push item to stack , on each iteration check if the last item was is same direction and ignore, if opposite direction skip current or pop the smaller size
+  //if the same size remove both , use while loop
 
+  const mystack = [];
+  let last = mystack[mystack.length-1];
 
+  for (let asteroid of asteroids) {
+   while (mystack.length > 0 && Math.sign(last) !== Math.sign(asteroid));
+    {
+      if (Math.sign(last) === Math.sign(asteroid)) {
+        mystack.push(asteroid);
+        // continue;
+      } else if (Math.sign(last) !== Math.sign(asteroid)) {
+        if (Math.abs(last) > Math.abs(asteroid)) {
+          continue;
+        } else if (Math.abs(last) < Math.abs(asteroid)) {
+          mystack.pop();
+          mystack.push(asteroid);
+          break;
+        }
+      }
+    }
+  }
 
-  
+  return mystack;
 };
 
-console.log(decodeString("3[a]2[bc]"))
+console.log(asteroidCollision([5, 10, -5]));
