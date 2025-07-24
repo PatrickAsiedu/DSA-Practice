@@ -38,27 +38,42 @@ var asteroidCollision = function (asteroids) {
   //if the same size remove both , use while loop
 
   const mystack = [];
-  let last = mystack[mystack.length-1];
+  let last;
+
+  let canCollide;
 
   for (let asteroid of asteroids) {
-   while (mystack.length > 0 && Math.sign(last) !== Math.sign(asteroid));
-    {
+    canCollide = true;
+    if (!mystack.length) {
+      mystack.push(asteroid);
+      last = mystack[mystack.length - 1];
+      canCollide = true;
+      continue;
+    }
+
+    while (canCollide) {
       if (Math.sign(last) === Math.sign(asteroid)) {
         mystack.push(asteroid);
-        // continue;
+        last = mystack[mystack.length - 1];
+        canCollide = false;
       } else if (Math.sign(last) !== Math.sign(asteroid)) {
-        if (Math.abs(last) > Math.abs(asteroid)) {
-          continue;
-        } else if (Math.abs(last) < Math.abs(asteroid)) {
+        // canCollide = true;
+        if (Math.abs(last) < Math.abs(asteroid)) {
           mystack.pop();
+          last = mystack[mystack.length - 1];
           mystack.push(asteroid);
+          continue;
+        } else if (Math.abs(last) > Math.abs(asteroid)) {
+          break;
+        } else {
+          mystack.pop();
+          last = mystack[mystack.length - 1];
           break;
         }
       }
     }
   }
-
   return mystack;
 };
 
-console.log(asteroidCollision([5, 10, -5]));
+console.log(asteroidCollision([10,2,-5]));
