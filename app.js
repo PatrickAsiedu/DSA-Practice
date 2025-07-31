@@ -86,30 +86,31 @@ var simplifyPath = function (path) {
   let result;
 
   for (let i = 1; i < path.length; i++) {
+    //not a slash and truthy
     if (path[i] !== "/" && path[i]) {
       dir = dir + path[i];
     } else if (path[i] === "/") {
-      dir && dir !== ".." &&dir !=="." && mystack.push(dir);
+      //if dir is truthy, and not . or .. push
+      dir && dir !== ".." && dir !== "." && mystack.push(dir);
+
+      //if we meet a .. remove prev dir
       dir == ".." && mystack.pop();
       dir = "";
       continue;
     }
   }
-  dir !== "." && mystack.push(dir);
+  if (dir === "..") {
+    mystack.pop();
+  }
+  dir !== "." && dir !== ".." && mystack.push(dir);
 
   result = "/" + mystack.join("/");
 
-  if (result.at(-1) === "/" && result !=="/") {
+  if (result.at(-1) === "/" && result !== "/") {
     return result.slice(0, -1);
   }
 
   return result;
-
-  //loop through while / is followed by  / , reduce to /
-
-  //if we meet a .. , remove prev dir if one exists ..means we need to track the directories
-
-  // we meet a /./ remove ./
 };
 
-console.log(simplifyPath("/d/./"));
+console.log(simplifyPath("/a//b////c/d//././/.."));
