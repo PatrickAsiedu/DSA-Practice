@@ -33,50 +33,60 @@ asteroids[i] != 0 */
  * @param {number[]} asteroids
  * @return {number[]}
  */
-var asteroidCollision = function(asteroids) {
-    const mystack = [];
-    
-    for (let asteroid of asteroids) {
-        let canCollide = true;
-        
-        while (canCollide) {
-            // If stack is empty, push asteroid
-            if (!mystack.length) {
-                mystack.push(asteroid);
-                canCollide = false;
-                continue;
-            }
-            
-            let last = mystack[mystack.length - 1];
-            
-            // Same direction or both moving left, no collision
-            if (Math.sign(last) === Math.sign(asteroid) || (last < 0 && asteroid < 0)) {
-                mystack.push(asteroid);
-                canCollide = false;
-            }
-            // Opposite directions (last moving right, current moving left)
-            else if (last > 0 && asteroid < 0) {
-                if (Math.abs(last) < Math.abs(asteroid)) {
-                    mystack.pop(); // Remove smaller last asteroid
-                    // Continue to check if new asteroid collides with next in stack
-                    continue;
-                } else if (Math.abs(last) > Math.abs(asteroid)) {
-                    canCollide = false; // Skip current asteroid
-                } else {
-                    mystack.pop(); // Both equal, remove last
-                    canCollide = false; // Don't push current
-                }
-            }
-            // No other case needs collision check (e.g., last < 0, asteroid > 0 won't collide)
-            else {
-                mystack.push(asteroid);
-                canCollide = false;
-            }
-        }
+var asteroidCollision = function (asteroids) {
+  //loop through input , push item to stack , on each iteration check if the last item was is same direction and ignore, if opposite direction skip current or pop the smaller size
+  //if the same size remove both , use while loop
+
+  const mystack = [];
+  let last;
+
+  let canCollide;
+
+  for (let asteroid of asteroids) {
+    canCollide = true;
+    if (!mystack.length) {
+      mystack.push(asteroid);
+      last = mystack[mystack.length - 1];
+      canCollide = true;
+      continue;
     }
-    
-    return mystack;
+
+    while (canCollide) {
+      //if both +/-ve
+      if (Math.sign(last) === Math.sign(asteroid)) {
+        mystack.push(asteroid);
+        last = mystack[mystack.length - 1];
+        canCollide = false;
+      }
+
+      // change logic to be specific to collsion occuring only if current is -ve and last is positive
+      //not same sign
+      else if (Math.sign(last) !== Math.sign(asteroid)) {
+        if (Math.abs(last) < Math.abs(asteroid)) {
+          mystack.pop();
+          last = mystack[mystack.length - 1];
+          if (last === undefined || Math.sign(last) === Math.sign(asteroid)) {
+            mystack.push(asteroid);
+            last = mystack[mystack.length - 1];
+
+            canCollide = false;
+          } else {
+            canCollide = true;
+          }
+        } else if (Math.abs(last) > Math.abs(asteroid)) {
+          break;
+        }
+        //the same
+        else {
+          mystack.pop();
+          last = mystack[mystack.length - 1];
+          break;
+        }
+      }
+    }
+  }
+
+  return mystack;
 };
-  
-  console.log(asteroidCollision([10,2,-5]));
-  
+
+console.log(asteroidCollision([-2, -1, 1, 2]));
