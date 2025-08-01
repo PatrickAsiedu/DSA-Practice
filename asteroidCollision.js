@@ -59,9 +59,8 @@ var asteroidCollision = function (asteroids) {
         canCollide = false;
       }
 
-      // change logic to be specific to collsion occuring only if current is -ve and last is positive
-      //not same sign
-      else if (Math.sign(last) !== Math.sign(asteroid)) {
+      // collision can occur only if current is -ve and last is positive
+      else if (asteroid < 0 && last > 0) {
         if (Math.abs(last) < Math.abs(asteroid)) {
           mystack.pop();
           last = mystack[mystack.length - 1];
@@ -82,6 +81,10 @@ var asteroidCollision = function (asteroids) {
           last = mystack[mystack.length - 1];
           break;
         }
+      } else {
+        mystack.push(asteroid);
+        last = mystack[mystack.length - 1];
+        canCollide = false;
       }
     }
   }
@@ -89,4 +92,4 @@ var asteroidCollision = function (asteroids) {
   return mystack;
 };
 
-console.log(asteroidCollision([-2, -1, 1, 2]));
+console.log(asteroidCollision([-2, -2, 1, -2]));
