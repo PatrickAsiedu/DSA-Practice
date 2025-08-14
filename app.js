@@ -34,22 +34,41 @@ All the integers in s are in the range [1, 300]. */
  * @return {string}
  */
 var decodeString = function (s) {
-  const myStack = [];
 
-  let subString = "";
-  for (let char of s) {
-    if (char === "[") {
-      continue;
-    } else if (char === "]") {
-      myStack.push(subString);
-      subString = "";
-    } else {
-      subString = subString + char;
+  //anytime we meet a [ we call decode , when we meet ], we return  value , we need to keep track of the number and result
+
+    let index = 0;
+    
+    function decode() {
+        let result = '';
+        let num = 0;
+        
+        while (index < s.length) {
+          //use current value of index, then increment (post increment)
+            const char = s[index++];
+            
+            if (char >= '0' && char <= '9') {
+                // Build the number (could be multi-digit like 10, 100)
+                num = num * 10 + parseInt(char);
+            } else if (char === '[') {
+                // Recursively decode the content inside brackets
+                const decodedString = decode();
+                // Repeat the decoded string num times
+                result += decodedString.repeat(num);
+                num = 0; // Reset number
+            } else if (char === ']') {
+                // End of current bracket, return result
+                return result;
+            } else {
+                // Regular character, add to result
+                result += char;
+            }
+        }
+        
+        return result;
     }
-  }
-  myStack.push(subString)
-
-  return myStack;
+    
+    return decode();
 };
 
-console.log(decodeString("2[abc]3[cd]ef"));
+console.log(decodeString("3[a2[c]]"))
