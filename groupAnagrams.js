@@ -10,7 +10,7 @@ Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
 
 Explanation:
 
-There is no string in strs that can be rearranged to form "bat".
+There is no string in strs that can be rearranged to form "bat". 
 The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
 The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
 Example 2:
@@ -33,9 +33,13 @@ Output: [["a"]]
  */
 
 //loop through each word, sort the word , store the word in map of k , word and  [index] , now go through the map values , use each index to query an put the word and push to result array
-//loop through each word , loop through each char, store the word => freqs of each char 
-var groupAnagrams = function (strs) {
+//loop through the word, sort word and store 
+var groupAnagrams = function(strs) {
 
+    return strs.sort((a, b) => a - b)
+    
+    
 };
 
-console.log(groupAnagrams(["tea"]));
+
+console.log(groupAnagrams("tea"))

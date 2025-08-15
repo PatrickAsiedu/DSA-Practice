@@ -84,9 +84,4 @@ var closeStrings = function (word1, word2) {
   return true;
 };
 
-console.log(
-  closeStrings(
-    "yyyuxuyuxxxxxxxyyyyyxxyyxxxyyyxyx",
-    "uxuxuuuuuuxuuyuuuuuuyuuuuuuuyyuuu"
-  )
-);
+console.log(closeStrings("abc", "bca"));
