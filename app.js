@@ -1,41 +1,76 @@
-/**Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+/**
+ * 2352. Equal Row and Column Pairs
+Medium
+Topics
+premium lock icon
+Companies
+Hint
+Given a 0-indexed n x n integer matrix grid, return the number of pairs (ri, cj) such that row ri and column cj are equal.
+
+A row and column pair is considered equal if they contain the same elements in the same order (i.e., an equal array).
 
  
 
 Example 1:
 
-Input: strs = ["eat","tea","tan","ate","nat","bat"]
 
-Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
-
-Explanation:
-
-There is no string in strs that can be rearranged to form "bat".
-The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
-The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+Input: grid = [[3,2,1],[1,7,6],[2,7,7]]
+Output: 1
+Explanation: There is 1 equal row and column pair:
+- (Row 2, Column 1): [2,7,7]
 Example 2:
 
-Input: strs = [""]
 
-Output: [[""]]
+Input: grid = [[3,1,2,2],[1,4,4,5],[2,4,2,2],[2,4,2,2]]
+Output: 3
+Explanation: There are 3 equal row and column pairs:
+- (Row 0, Column 0): [3,1,2,2]
+- (Row 2, Column 2): [2,4,2,2]
+- (Row 3, Column 2): [2,4,2,2]
+ 
 
-Example 3:
+Constraints:
 
-Input: strs = ["a"]
-
-Output: [["a"]]
-
+n == grid.length == grid[i].length
+1 <= n <= 200
+1 <= grid[i][j] <= 105
  */
 
 /**
- * @param {string[]} strs
- * @return {string[][]}
+ * @param {number[][]} grid
+ * @return {number}
  */
+var equalPairs = function (grid) {
+  const myMap = new Map();
+  grid.map((i) => {
+    const row = i.join(",");
+    myMap.set(row, (myMap.get(row) || 0) + 1);
+  });
 
-//loop through each word, sort the word , store the word in map of k , word and  [index] , now go through the map values , use each index to query an put the word and push to result array
-//loop through each word , loop through each char, store the word => freqs of each char 
-var groupAnagrams = function (strs) {
+  const n = grid[0].length;
 
+  let count =0
+
+ // 2. For each column, build it and check how many rows match it
+    for (let j = 0; j < n; j++) {
+        // Build column j as array
+        const col = [];
+        for (let i = 0; i < n; i++) {
+            col.push(grid[i][j]);
+        }
+        
+        const colStr = col.join(',');
+        
+        // If this column appeared as a row → add its frequency
+        if (myMap.has(colStr)) {
+            count += myMap.get(colStr);
+        }
+    }
+    
+    return count;
 };
 
-console.log(groupAnagrams(["tea"]));
+console.log(
+  equalPairs(
+  [[11,1],[1,11]])
+);

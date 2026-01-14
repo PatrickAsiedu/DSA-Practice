@@ -36,11 +36,41 @@ n == grid.length == grid[i].length
 1 <= grid[i][j] <= 105
  */
 
-
 /**
  * @param {number[][]} grid
  * @return {number}
  */
-var equalPairs = function(grid) {
+var equalPairs = function (grid) {
+  const myMap = new Map();
+  grid.map((i) => {
+    const row = i.join(",");
+    myMap.set(row, (myMap.get(row) || 0) + 1);
+  });
+
+  const n = grid[0].length;
+
+  let count =0
+
+ // 2. For each column, build it and check how many rows match it
+    for (let j = 0; j < n; j++) {
+        // Build column j as array
+        const col = [];
+        for (let i = 0; i < n; i++) {
+            col.push(grid[i][j]);
+        }
+        
+        const colStr = col.join(',');
+        
+        // If this column appeared as a row → add its frequency
+        if (myMap.has(colStr)) {
+            count += myMap.get(colStr);
+        }
+    }
     
+    return count;
 };
+
+console.log(
+  equalPairs(
+  [[11,1],[1,11]])
+);
