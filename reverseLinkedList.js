@@ -38,9 +38,8 @@ Follow up: A linked list can be reversed either iteratively or recursively. Coul
  * @return {ListNode}
  */
 
-//reversing a linked list is basically letting everyother element(next element) take a turn at becoming the head, by swapping left(prev) with right(curr)
+//reversing a linked list is basically letting everyother element(next element) take a turn at becoming the head, while the head becomes tail
 var reverseList = function(head) {
-  //start with null cos no item before head
     let prev = null;
     let curr = head;
     
@@ -48,10 +47,10 @@ var reverseList = function(head) {
         // Save next node before we overwrite it
         let nextTemp = curr.next;
         
-        // swap pointers
+        // Reverse the pointer
         curr.next = prev;
         
-        //move iterator to next item
+        // Move forward
         prev = curr;
         curr = nextTemp;
     }
