@@ -31,19 +31,52 @@ The number of nodes in each linked list is in the range [1, 100].
 0 <= Node.val <= 9
 It is guaranteed that the list represents a number that does not have leading zeros. */
 
-
 /**
  * Definition for singly-linked list.
  * function ListNode(val, next) {
  *     this.val = (val===undefined ? 0 : val)
  *     this.next = (next===undefined ? null : next)
  * }
- */
-/**
+ * 
+ * 
+
  * @param {ListNode} l1
  * @param {ListNode} l2
  * @return {ListNode}
  */
-var addTwoNumbers = function(l1, l2) {
-    
+
+var addTwoNumbers = function (l1, l2) {
+  let sum = 0;
+  let carry = 0;
+  let head = null;
+  let current = null;
+
+  while (l1 !== null || l2 !== null || carry > 0) {
+    let val1 = l1 !== null ? l1.val : 0;
+    let val2 = l2 !== null ? l2.val : 0;
+
+    sum = val1 + val2 + carry;
+    carry = Math.floor(sum / 10);
+
+    //get the remainder as the digit
+    let digit = sum % 10;
+
+    if (head === null) {
+      head = new ListNode(digit);
+      current = head;
+    } else {
+      current.next = new ListNode(digit);
+      current = current.next;
+    }
+
+    if (l1 !== null) l1 = l1.next;
+    if (l2 !== null) l2 = l2.next;
+  }
+  return head;
 };
+
+
+let l1 = createList([2, 4, 3]);
+let l2 = createList([5, 6, 4]);
+let result1 = addTwoNumbers(l1, l2);
+
