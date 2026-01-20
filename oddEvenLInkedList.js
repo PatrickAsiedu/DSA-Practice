@@ -41,6 +41,42 @@ The number of nodes in the linked list is in the range [0, 104].
  * @param {ListNode} head
  * @return {ListNode}
  */
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
 var oddEvenList = function(head) {
+       if (head === null || head.next === null) {
+        return head;
+    }
+    
+    // odd points to the current odd-indexed node
+    // even points to the current even-indexed node
+    let odd = head;
+    let even = head.next;
+    let evenHead = even;  // Save the head of even list to connect later
+    
+    // Traverse and separate odd and even nodes
+    while (even !== null && even.next !== null) {
+        odd.next = even.next;      // Connect odd to next odd
+        odd = odd.next;            // Move odd pointer forward
+        
+        even.next = odd.next;      // Connect even to next even
+        even = even.next;          // Move even pointer forward
+    }
+    
+    console.log(odd)
+    console.log(evenHead)
+    // Connect the end of odd list to the beginning of even list
+    odd.next = evenHead;
+    
+    return head;
     
 };
