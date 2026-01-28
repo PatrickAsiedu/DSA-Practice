@@ -37,7 +37,19 @@ class Graph {
     this.adjacencyList.delete(vertex);
   }
 
-  removeEdge() {}
+  removeEdge(vertex1, vertex2) {
+    this.adjacencyList.has(vertex1) &&
+      this.adjacencyList.set(vertex1,
+        this.adjacencyList.get(vertex1).filter((e) => e.node !== vertex2),
+      );
+
+    if (!this.isDirected && this.adjacencyList.has(vertex2)) {
+      this.adjacencyList.set(
+        vertex2,
+        this.adjacencyList.get(vertex2).filter((e) => e.node !== vertex1),
+      );
+    }
+  }
 
   bfs() {}
 
@@ -59,9 +71,7 @@ undirectedGraph.addEdge("Alice", "Fred");
 undirectedGraph.print();
 
 // undirectedGraph.removeVertex("Alice");
-undirectedGraph.removeEdge(vertex1,vertex2){
-
-}
+undirectedGraph.removeEdge("Alice", "Bob");
 
 undirectedGraph.print();
 
